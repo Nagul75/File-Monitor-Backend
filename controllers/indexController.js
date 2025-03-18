@@ -21,7 +21,17 @@ async function createUserPost(req, res) {
     res.json(req.body)
 }
 
+async function loginUserPost(req, res) {
+    
+}
+
+async function logoutGet(req, res){
+
+}
+
 module.exports = {
     showUsersGet,
-    createUserPost
+    createUserPost,
+    loginUserPost,
+    logoutGet
 }

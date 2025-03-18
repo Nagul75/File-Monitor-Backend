@@ -19,3 +19,5 @@ model User {
   email String @unique
   password String
 }
+
+//User stored in "base/16604/16619"

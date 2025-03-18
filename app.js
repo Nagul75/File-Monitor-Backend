@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const passport = require('passport')
 
 const pool = require('./db/pool')
 const app = express()

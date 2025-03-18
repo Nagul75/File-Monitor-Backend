@@ -1,6 +1,7 @@
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 const bcrypt = require('bcryptjs')
+const utils = require('../config/utils')
 
 async function showUsersGet(req, res) {
     res.send("idk")
@@ -22,7 +23,23 @@ async function createUserPost(req, res) {
 }
 
 async function loginUserPost(req, res) {
-    
+    const user = prisma.user.findUnique({
+        where: {
+            username: req.body.username
+        }
+    })
+    if(!user) {
+        return res.status(401).json({success: false, msg: "Username doesn't exist"})
+    }
+    const password = req.body.password
+    const match = await bcrypt.compare(password, user.password)
+
+    if(match) {
+        const tokenObject = utils.issueJWT(user)
+        res.status(200).json({success: true, token: tokenObject.token, expiresIn: tokenObject.expires})
+    } else {
+        res.status(401).json({success: false, msg: "Incorrect password"})
+    }
 }
 
 async function logoutGet(req, res){

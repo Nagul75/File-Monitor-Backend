@@ -23,7 +23,7 @@ async function createUserPost(req, res) {
 }
 
 async function loginUserPost(req, res) {
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
         where: {
             username: req.body.username
         }

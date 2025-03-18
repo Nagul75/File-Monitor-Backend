@@ -4,6 +4,8 @@ const passport = require('passport')
 
 const pool = require('./db/pool')
 const app = express()
+
+require('./config/passport')(passport)
 const indexRouter = require('./routes/indexRouter')
 
 app.use(express.urlencoded({extended: true}))

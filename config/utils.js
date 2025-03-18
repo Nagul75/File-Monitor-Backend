@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken')
+const path = require('path')
+const fs = require('fs')
 require('dotenv').config()
-const PRIV_KEY = process.env.PRIV_KEY
+const pathToPrivKey = path.join(__dirname, "..", "cryptography", "id_rsa_priv.pem")
+const PRIV_KEY = fs.readFileSync(pathToPrivKey, 'utf-8')
 
 
 function issueJWT(user) {

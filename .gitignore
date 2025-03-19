@@ -1,2 +1,4 @@
 node_modules
 id_rsa_priv.pem
+combined.log
+error.log

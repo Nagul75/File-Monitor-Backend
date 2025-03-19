@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
+const logger = require('../logger/logger')
 
 const pathToPubKey = path.join(__dirname, "..", "cryptography", "id_rsa_pub.pem")
 const PUB_KEY = fs.readFileSync(pathToPubKey, 'utf-8')
@@ -16,13 +17,18 @@ const options = {
 
 module.exports = (passport) => {
     passport.use(new JWTstrategy(options, async function(jwt_payload, done) {
-        console.log(jwt_payload)
-
-        const user = await prisma.user.findUnique({
-            where: {
-                id: jwt_payload.id
-            }
-        })
+        try{
+            logger.info(`Executing query: SELECT DATA with params: [${jwt_payload.id}]`)
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: jwt_payload.id
+                }
+            })
+            logger.info(`Successfully executed SELECT DATA query`)
+        }
+        catch(err) {
+            logger.error(`Error executing SELECT DATA query: ${err.message}`)
+        }
         if(user) {
             return done(null, user)
         } else {
